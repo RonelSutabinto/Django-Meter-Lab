@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+{% include 'base/header.html' %}
+{% endblock header %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 row center">
+          <div class="col-sm-1.5 mr-2">
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <section class="content">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <table id="table_rr" class="table table-nowrap table-striped">
+                <thead>
+                  <tr>
+                    <th style="display: none;">ID</th>
+                    <th style="width: 120px;">Date</th>
+                    <th>Doc. No.</th>
+                    <th>Brand</th>
+                    <th>Serials</th>
+                    <th>Meter Type</th>
+                    <th>Qty</th>
+                    <th></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+    </section>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+ 
+
+  function delete_meters(id) {
+
+    var ok = confirm('Are you sure to delete this entry?');
+    if (ok == true) {
+      $.ajax({
+        url: "{% url 'delete_meters' 0 %}".replace('0', id),
+        type: 'GET',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        contentType: false,
+        data: { id: id, },
+        success: function (data) {
+          if (data == 'deleted') {
+            $('table_rr').datatable().ajax.reload(null, false);
+            // window.location.reload();
+          }
+        },
+        error: function (e) {
+          alert('err: meter list 217');
+        }
+      });
+    }
+  }
+
+</script>
+{% endblock content %}

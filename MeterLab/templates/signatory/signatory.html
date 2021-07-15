@@ -1,0 +1,151 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block header %}
+{% include 'base/header.html' %}
+{% endblock header %}
+
+{% block content %}
+<style type="text/css">
+    label {
+        text-align: right;
+        color: darkslategray;
+        font-size-adjust: 0.45;
+    }
+</style>
+<form action method="POST" autocomplete="off">
+    {% csrf_token %}
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1>Signatories</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <button type="submit" class="btn btn-success btn-sm mr-1" tabindex="-1"><i class="fal fa-save mr-1"></i>Save & Done</button>
+                        <a href="" class="btn btn-danger btn-xs text-xs"><i class="fal fa-share-square"></i><span style="font-size: 12px;"> Cancel</span></a>
+                    </ol>
+                </div>
+            </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-success card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fa fa-info-circle mr-1"
+                                        aria-hidden="true"></i>Calibration Signatory</h3>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" class="form-control form-control-sm" name="id" id="id_id" value="{{ form.id }}">
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_calibratedby" class="col-sm-3 col-form-label">Calibrated By:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" name="calibratedby"
+                                            id="id_calibratedby" value="{{ form.calibratedby }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_calibratedby_position"
+                                        class="col-sm-3 col-form-label">Position:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm"
+                                            name="calibratedby_position" id="id_calibratedby_position" value="{{ form.calibratedby_position }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card card-info card-outline">
+
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fa fa-info-circle mr-1" aria-hidden="true"></i>Meter
+                                    Test Signatory</h3>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_checkedby" class="col-sm-3 col-form-label">Checked By:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" name="checkedby" id="id_checkedby" value="{{ form.checkedby }}">
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_checkedby_position" class="col-sm-3 col-form-label">Position:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="checkedby_position"
+                                            class="form-control form-control-sm" id="id_checkedby_position" value="{{ form.checkedby_position }}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_notedby" class="col-sm-3 col-form-label">Noted By:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="notedby" class="form-control form-control-sm" id="id_notedby" value="{{ form.notedby }}">
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_notedby_position" class="col-sm-3 col-form-label">Position:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="notedby_position" class="form-control form-control-sm" id="id_notedby_position" value="{{ form.notedby_position }}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_preparedby" class="col-sm-3 col-form-label">Prepared By:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="preparedby" class="form-control form-control-sm" id="id_preparedby" value="{{ form.preparedby }}">
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_preparedby_position"
+                                        class="col-sm-3 col-form-label">Position:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="preparedby_position" class="form-control form-control-sm" id="id_preparedby_position" value="{{ form.preparedby_position }}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_receivedby" class="col-sm-3 col-form-label">Received By:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="receivedby" class="form-control form-control-sm" id="id_receivedby" value="{{ form.receivedby }}">
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback row">
+                                    <label for="id_receivedby_position"
+                                        class="col-sm-3 col-form-label">Position:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="receivedby_position" class="form-control form-control-sm" id="id_receivedby_position" value="{{ form.receivedby_position }}">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</form>
+
+<script>
+
+
+</script>
+{% endblock content %}

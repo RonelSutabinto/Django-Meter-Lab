@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 3 | Invoice Print</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 4 -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static "plugins/fontawesome-free/css/all.min.css" %}">
+    <!-- Ionicons -->
+    <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static "dist/css/adminlte.min.css" %}">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="{% static "plugins/fontawesome-pro-5.13.0-web/css/all.min.css" %}">
+</head>
+
+<style>
+    .font_twenty   { font-size: 20px;   }
+</style>
+<body>
+    <div class="wrapper">
+        <!-- Main content -->
+        <section class="invoice">
+            <!-- title row -->
+            <div class="row">
+                <div class="col-2">
+                    <img src="{% static "dist/img/logo2-1.2x1.2.png" %}" alt="ZANECO">
+                </div>
+                <div class="col-8">
+                    <center>
+                            <h4>ZAMBOANGA DEL NORTE ELECTRIC COOP., INC.</h4>
+                            <address>
+                                <b>TECHNICAL SERVICES DEPARTMENT (TSD)</b><br>
+                                <b>Power System and Special Equipment Division (PSSED)</b>
+                            </address>
+                    </center>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                <center>
+                    <h4>METER TEST REPORT</h4>
+                </center>
+                </div>
+            </div>
+            <hr>
+            <div class="row font_twenty">
+                <div class="col-sm-2" style="text-align: right;">
+                    <!-- Consumer: <br>
+                    Address: -->
+                </div>
+                <div class="col-sm-3">
+                    <!-- Name No <br>
+                    NPA -->
+                </div>
+                <div class="col-sm-4" style="text-align: right;">
+                    Date:
+                </div>
+                <div class="col">
+                    {{ datetoday }}
+                </div>
+            </div>
+            <br>
+            <div class="row font_twenty">
+                <div class="col">
+                    <center>
+                        <p style="background-color: grey; border: 1.5px solid rgba(2, 2, 2, 0.3);">DESCRIPTION OF METER</p>
+                    </center>
+                </div>
+            </div>
+            <div class="row font_twenty">
+                <div class="col-sm-2" style="text-align: right;">
+                    Meter Name:<br>
+                    Serial No.:<br>
+                    Reading:<br>
+                    Type / Class:<br>
+                </div>
+                <div class="col-sm-3">
+                    {{ form.0.0 }}<br>
+                    {{ form.0.1 }}<br>
+                    {{ form.0.16 }}<br>
+                    {{ form.0.17 }}<br>
+                </div>
+                <div class="col-sm-4" style="text-align: right;">
+                    Volts:<br>
+                    Phase:<br>
+                    Kh:<br>
+                    T.A:<br>
+                </div>
+                <div class="col-sm-3">
+                    {{ form.0.18 }}<br>
+                    {{ form.0.19 }}<br>
+                    {{ form.0.20 }}<br>
+                    {{ form.0.21 }}<br>
+                </div>
+            </div>
+            <br>
+            <div class="row font_twenty">
+                <div class="col">
+                    <center>
+                        <p style="background-color: grey; border: 1px solid rgba(77, 72, 72, 0.3);">TEST CALIBRATION REPORT</p>
+                    </center>
+                </div>
+            </div>
+            <div class="row font_twenty">
+                <div class="col-sm-3" style="text-align: right;">
+                    <b style="border-bottom: 1px solid rgb(0, 0, 0); ">Full Load</b><br>
+                    Trial 1:<br>
+                    Trial 2:<br>
+                    Trial 3:<br>
+                    <b style="border-top: 1px solid rgb(0, 0, 0); ">70% Average:</b><br>
+                </div>
+                <div class="col-sm-3">
+                    <b style="border-bottom: 1px solid rgb(0, 0, 0); ">Test Result</b><br>
+                    {{ form.0.9 }}%<br>
+                    {{ form.0.10 }}%<br>
+                    {{ form.0.11 }}%<br>
+                    <b style="border-top: 1px solid rgb(0, 0, 0); ">{{ form.0.9 }}%</b><br>
+                </div>
+                <div class="col-sm-3" style="text-align: right;">
+                    <b style="border-bottom: 1px solid rgb(0, 0, 0); ">Light Load</b><br>
+                    Trial 1:<br>
+                    Trial 2:<br>
+                    Trial 3:<br>
+                    <b style="border-top: 1px solid rgb(0, 0, 0); ">30% Average:</b><br>
+                </div>
+                <div class="col-sm-3">
+                    <b style="border-bottom: 1px solid rgb(0, 0, 0); ">Test Result</b><br>
+                    {{ form.0.13 }}%<br>
+                    {{ form.0.14 }}%<br>
+                    {{ form.0.15 }}%<br>
+                    <b style="border-top: 1px solid rgb(0, 0, 0); ">{{ form.0.12 }}%</b><br>
+                </div>
+            </div>
+
+            <br>
+            <div class="row font_twenty">
+                <div class="col-sm-3" style="text-align: right;">
+                    <b>General Average</b><br>
+                </div>
+                <div class="col-sm-3">
+                    <b>{{ form.0.7 }}%</b><br>
+                </div>
+                <div class="col-sm-3" style="text-align: right;">
+                    <b>Findings</b><br>
+                </div>
+                <div class="col-sm-3">
+                    <b>
+                        {% if form.0.7 >= 98 %}
+                            Passed
+                        {% else %}
+                            Failed
+                        {% endif %}
+                    </b><br>
+                </div>
+            </div>
+            <br>
+            <div class="row font_twenty">
+                <div class="col-12">
+                    <center>
+                        <p style="background-color: grey; border: 1px solid rgba(77, 72, 72, 0.3);">REMARKS</p>
+                    </center>
+                    <p style="margin-left: 22px;"> {{ form.0.22 }}.</p>
+                </div>
+            </div>
+
+
+            <div class="row font_twenty" style="position: fixed; bottom: 0;">
+                <div class="col-12" style=" width: 7in;">
+                    <p style="background-color: rgba(255, 255, 255, 0); border: 1px solid rgba(255, 255, 255, 0);"></p>
+                </div>
+                <div class="col-6 row">
+                    <div class="col-sm-4" style="text-align: right;">
+                        Calibrated By:
+                    </div>
+                    <div class="col-sm-6" style="text-align: center;">
+                        <br><br><br>
+                        <p style="border-bottom: 1px solid rgb(0, 0, 0); ">JOSE DIONARD R. CUENCA</p>
+                        Calibrator
+                    </div>
+                </div>
+                <div class="col-6 row">
+                    <div class="col-sm-4" style="text-align: right;">
+                        Checked By:
+                    </div>
+                    <div class="col-sm-6" style="text-align: center;">
+                        <br><br><br>
+                        <p style="border-bottom: 1px solid rgb(0, 0, 0); ">ENGR. IBO R. ORONG</p>
+                        NMD Chief
+                    </div>
+                </div>
+                <br>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
+
+    <script type="text/javascript">
+        window.addEventListener("load", window.print());
+    </script>
+
+
+</body>
+
+</html>

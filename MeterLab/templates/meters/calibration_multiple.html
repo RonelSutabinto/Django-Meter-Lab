@@ -1,0 +1,310 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block header %}
+{% include 'base/header.html' %}
+{% endblock header %}
+
+{% block content %}
+<style type="text/css">
+    label {
+        text-align: right;
+        color: darkslategray;
+        font-size-adjust: 0.45;
+    }
+</style>
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Meter Calibration</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <button type="submit" class="btn btn-success btn-sm mr-1 "><i class="fal fa-save mr-1"
+                                tabindex="-1"></i>Save & Next</button>
+                        <a href="{% url 'seriallist' idmeters %}" class="btn btn-info btn-sm"><i
+                                class="fal fa-share-square"></i>
+                            <span style="font-size: 12px;"> Done</span></a>
+                    </ol>
+                </div>
+            </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+        {% if save == "save" %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> Success: Meter calibration saved!
+            <button type="button" class="close" data-dismiss="alert">×</button>
+        </div>
+        <!-- <div class='alert alert-success alert-dismissible row'>
+            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+            <h5><i class='icon fas fa-check'></i>Meter calibration saved!</h5>
+        </div> -->
+        {% endif %}
+        <div class="row">
+            <div class="col-12">
+                <form action method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <input type="hidden" name="active" min="0" required="" id="id_active" value="0">
+                    <input type="hidden" name="userid" maxlength="45" required="" id="id_userid" value="0">
+                    <div class="card card-info card-outline">
+
+                        <div class="row g-0">
+                            <div class="col-lg-4">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="id_testdate" class="col-sm-3 col-form-label" styl><span>
+                                                Date:</span></label>
+                                        <div class="col">
+                                            <div class="input-group inputs-group-sm">
+                                                <input type="date" class="form-control form-control-sm" id="id_testdate"
+                                                    name="testdate" data-mask datemask
+                                                    value="{{ datetoday|date:'Y-m-d' }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="idmeterserials" class="col-sm-3 col-form-label">Serial
+                                            No.:</label>
+                                        <div class="col">
+                                            <select class="form-control select2" id="id_idmeterserials"
+                                                name="idmeterserials">
+                                                {% for row in serials %}
+                                                <option value="{{ row.id }}">
+                                                    {{ row.serialno }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="id_reading" class="col-sm-3 col-form-label">Reading:</label>
+                                        <div class="col">
+                                            <input type="number" class="form-control form-control-sm d"
+                                                style="text-align: right;" id="id_reading" name="reading" step="0.01"
+                                                value="0.00" step="any" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_type" class="col-sm-3 col-form-label">Type/Class:</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control form-control-sm" id="id_type"
+                                                name="type" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_volts" class="col-sm-3 col-form-label">Volts:</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control form-control-sm" id="id_volts"
+                                                name="volts" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_phase" class="col-sm-3 col-form-label">Phase: </label>
+                                        <div class="col">
+                                            <input type="text" class="form-control form-control-sm" id="id_phase"
+                                                name="phase" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_kh" class="col-sm-3 col-form-label">Kh:</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control form-control-sm" id="id_kh" name="kh"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_ta" class="col-sm-3 col-form-label">T.A.:</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control form-control-sm" id="id_ta" name="ta"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-8 row mt-2">
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <i class="fas fa-tachometer-alt-fastest mr-1" style="color: dimgray;"></i>
+                                            Full Load Test (70%)
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="form-group row">
+                                                <label for="id_fl1" class="col-sm-3 col-form-label">Trial 1:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_fl1" name="fl1" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="id_fl2" class="col-sm-3 col-form-label">Trial 2:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_fl2" name="fl2" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="id_fl3" class="col-sm-3 col-form-label">Trial 3:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_fl3" name="fl3" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group row">
+                                                <label for="id_fullload_average" class="col-sm-3 col-form-label"
+                                                    style="color: green;">Average: </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_fullload_average"
+                                                        name="fullload_average" value="0.00" readonly tabindex="-1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <i class="fas fa-tachometer-alt-fastest mr-1" style="color: dimgray;"></i>
+                                            Light Load Test (30%)
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <label for="id_ll1" class="col-sm-3 col-form-label">Trial 1:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_ll1" name="ll1" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="id_ll2" class="col-sm-3 col-form-label">Trial 2:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_ll2" name="ll2" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="id_ll3" class="col-sm-3 col-form-label">Trial 3:
+                                                </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_ll3" name="ll3" step="0.01"
+                                                        value="0.00" onchange="generate_average()">
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group row">
+                                                <label for="id_lightload_average" class="col-sm-3 col-form-label"
+                                                    style="color: green;">Average: </label>
+                                                <div class="col">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        style="text-align: right;" id="id_lightload_average"
+                                                        name="lightload_average" value="0.00" readonly tabindex="-1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <button type="button" onClick="generate_average()"
+                                                class="btn btn-info btn-sm"><i class="fad fa-abacus mr-1"></i>Generate
+                                                Average</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="id_gen_average" class="col col-form-label"
+                                                            style="text-align: left; color: green;">General
+                                                            Average </label>
+                                                        <div class="col">
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                style="text-align: right;" id="id_gen_average"
+                                                                name="gen_average" readonly value="0.00" tabindex="-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col">
+                                                            <input type="checkbox" name="isdamage" value="1"
+                                                                id="id_isdamage" class="mt-1 ml-2">
+                                                            <label for="is_barcoded"><span></span> Is
+                                                                Damage</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label for="id_remarks" class="col col-form-label"
+                                                            style="text-align: left;">Remarks </label>
+                                                        <div class="col">
+                                                            <textarea type="text" class="form-control form-control-sm"
+                                                                id="id_remarks" name="remarks" rows="3" cols="4"
+                                                                required style="resize: none;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- </section> -->
+</div>
+
+<script>
+
+    $('[data-mask]').inputmask();
+    $('#datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' });
+
+    $(".d").change(function () {
+        this.value = parseFloat(this.value).toFixed(2);
+    });
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 46 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    function generate_average() {
+        var seventypercent = ((Number($('#id_fl1').val()) + Number($('#id_fl2').val()) + Number($('#id_fl3').val())) / 3) * .7;
+        var thirtypercent = ((Number($('#id_ll1').val()) + Number($('#id_ll2').val()) + Number($('#id_ll3').val())) / 3) * .3;
+        var gen_average = (seventypercent + thirtypercent);
+        $('#id_fullload_average').val(parseFloat(seventypercent).toFixed(2));
+        $('#id_lightload_average').val(parseFloat(thirtypercent).toFixed(2));
+        $('#id_gen_average').val(parseFloat(gen_average).toFixed(2));
+    }
+
+</script>
+{% endblock content %}

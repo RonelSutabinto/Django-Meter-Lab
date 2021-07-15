@@ -1,0 +1,104 @@
+<div class="card">
+    <div class="card-header">
+        <div class="col-sm-5 row">
+            <i class="fad fa-tools mt-1 mr-2"></i>
+            <h6 id="id_serial"></h6>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="table3" class="table table-nowrap table-striped dtr-inline">
+            <thead>
+                <tr>
+                    <th style="display: none;"></th>
+                    <th>Actions</th>
+                    <th style="width: fit-content;">Date</th>
+                    <th>Findings</th>
+                    <th>Gen. Average</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in trans %}
+                <tr>
+                    <td style="display: none;"> {{row.id}} </td>
+                    <td style="width: 270;">
+                            <div class="btn-group">
+                                <a href="meter_test_report/{{ row.id }}" target="_blank" class="btn btn-info btn-xs text-sm" title="Edit"><i class="fal fa-print mr-1"></i><span
+                                        style="font-size: 12px;">Print</span></a>
+                            <!-- </div>
+                            <div class="btn-group"> -->
+                                <a href="#" class="btn btn-danger btn-xs text-sm" title="Delete" onclick="delete_serials('{{ row.id }}')"><i class="fal fa-trash-alt"></i><span
+                                        style="font-size: 12px;"></span></a>
+                            </div>
+                    </td>
+                    <td style="width: fit-content;"><a href="edit/{{ row.id }}"> {{row.testdate}} </a></td>
+                    <td>
+                        {% if row.isdamage == 1%}
+                            Damage
+                        {% else %}
+                            {% if row.gen_average >= 98 %}
+                                Passed
+                            {% else %}
+                                Failed
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td> {{row.gen_average}} </td>
+                    <td> {{row.remarks}} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    // function load_serial_calibration_entry() {
+    //     var id = $('#idmeterserials').val();
+    //     window.location = "calibrate_meter/" + id + "/";
+    // }
+
+    $('#table3').DataTable({
+        "order": [1, "asc"],
+        "searching": false,
+        "processing": true,
+        "info": true,
+        "paging": true,
+        "lengthChange": false,
+        // "responsive": true,
+        "columnDefs": [{
+            "targets": [4],
+            "className": "text-right",
+        }],
+
+    });
+
+    function delete_serials(id) {
+        var ok = confirm('Are you sure to delete this entry?');
+        if (ok == true) {
+             $.ajax({
+                url: "{% url 'delete_serials' 0 %}".replace('0', id),
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                contentType: false,
+                data: { id: id, },
+                success: function (data) {
+                    if (data == 'deleted') {
+                        window.location.reload();
+                    }
+                },
+                error: function (e) {
+                    alert('err: delete serials');
+                }
+            });
+        }
+    }
+
+    // function print_report(id) {
+    //     window.location = "meter_test_report.html";
+    // }
+
+
+</script>
